@@ -1,0 +1,19 @@
+.board_title{
+    text-align: center;
+    color: #a06b01;
+    font-size: 46px;
+}
+
+.title_black_part{
+font-size: smaller;
+color: #000000
+}
+
+.columns_container{
+    /* list-style: none; */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 20px; 
+    padding: 0;
+    margin: 0;
+}

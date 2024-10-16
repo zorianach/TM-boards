@@ -1,0 +1,71 @@
+.modal_overlay {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: 999; 
+  }
+  
+  .modal {
+    position: absolute; 
+    width: 400px; 
+    padding: 30px; 
+    border: 4px solid #383838;
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;   
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: black;
+    background-color: lightgray;
+    z-index: 1000; 
+  }
+  
+  .modal_container {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    gap: 5px;
+    width: 350px;
+    max-width: 350px;
+  }
+.card_title{
+    font-size: 16px;
+    width: 100%;
+    border-radius: 5px;
+    padding: 5px;
+}
+.card_description{
+    font-size: 14px;
+    width: 100%;
+    height: 55px;
+    border-radius: 5px;
+    padding: 5px;
+
+
+}
+.buttons_box{
+  display: flex;
+  gap: 40px;
+  margin-top: 10px;
+}
+.card_button{
+    margin-top: 10px;
+    border: 2px solid #a06b01;
+    border-radius: 5px;
+    height: 30px;
+    width: 120px;
+    font-size: 16px; 
+    font-weight: 600;
+    background-color: rgb(255, 255, 255);
+    z-index: 20;
+}
+.card_button:hover{
+  transform: translateY(-2px);
+  background-color: #f6f6f6;
+  border-color:#ffaa00;
+}
+.card_button:active{
+  background-color: #ffaa00;
+}

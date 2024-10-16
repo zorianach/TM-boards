@@ -1,0 +1,6 @@
+.header_container{
+  display: flex;
+  justify-content: flex-start;
+  background-color: transparent;
+  gap: 20px;
+}

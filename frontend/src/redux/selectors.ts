@@ -1,6 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 
+
 // Селектори для дошок (Boards)
 export const selectAllBoards = (state: RootState) => state.boards.boards
 export const selectBoardById = (state: RootState, boardId: string) => {

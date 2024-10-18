@@ -8,7 +8,6 @@ import Header from '../../components/Header/Header';
 import css from './BoardPage.module.css'
 import SearchBar from '../../components/SearchBar/SearchBar';
 import { useDispatch, useSelector } from 'react-redux';
-
 import { selectBoardName } from '../../redux/selectors';
 import { AppDispatch } from '../../redux/store';
 import { getBoardData } from '../../redux/thunks';

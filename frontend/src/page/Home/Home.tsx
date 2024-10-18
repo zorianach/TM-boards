@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import css from './Home.module.css'
 import Header from '../../components/Header/Header';
 import { useDispatch, useSelector } from 'react-redux';
-
 import { AppDispatch} from '../../redux/store';
 import { addBoard, getBoardData, loadBoards } from '../../redux/thunks';
 import { selectAllBoards } from '../../redux/selectors';

@@ -11,3 +11,16 @@ export interface CardProps {
     name: string | null;
     children?: React.ReactNode;
   }
+
+  export interface ColumnProps {
+    title: string;
+    cards: CardProps[];
+    onAddCard: (title: string, description: string, boardId: string, status: 'todo' | 'inProgress' | 'done') => void;
+    onEditClick: (card: CardProps) => void;
+    onDeleteClick: (cardId: string) => Promise<void>;  
+    columnId: string;
+  }
+
+  export type ColumnStatus = 'todo' | 'inProgress' | 'done';
+
+

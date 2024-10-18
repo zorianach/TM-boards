@@ -110,6 +110,7 @@ export const removeCard = createAsyncThunk('cards/deleteCard', async ({ boardId,
 export const updateCardDetails = createAsyncThunk('cards/updateCard', async ({ cardId, updatedCard }: { cardId: string, updatedCard: Omit<CardProps, '_id'> }, { rejectWithValue }) => {
   try{
     const response = await updateCard(cardId, updatedCard);
+
     return response;
   } catch (error) {
     console.error("Error fetching board title:", error);

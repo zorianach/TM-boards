@@ -1,5 +1,4 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { CardProps } from "../types";
 import { RootState } from "./store";
 
 // Селектори для дошок (Boards)
@@ -17,13 +16,7 @@ export const selectBoardCards = (boardId: string) => createSelector(
     done: cards.done.filter(card => card.boardId === boardId),
   })
 );
-// export const selectBoardCards = (boardId: string) => (state: RootState): { todo: CardProps[]; inProgress: CardProps[]; done: CardProps[] } => {
-//     return {
-//         todo: state.cards.cards.todo.filter(card => card.boardId === boardId),
-//         inProgress: state.cards.cards.inProgress.filter(card => card.boardId === boardId),
-//         done: state.cards.cards.done.filter(card => card.boardId === boardId),
-//     };
-//   };
+
 export const selectBoardId = (state: RootState) => state.cards.boardId;
 export const selectBoardName = (state: RootState) => state.cards.boardName;
 

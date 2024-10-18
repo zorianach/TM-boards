@@ -3,8 +3,9 @@ import { addCard, getBoardData, loadCards, removeCard, updateCardDetails } from 
 import { CardProps } from '../types';
 
 export interface CardsState {
-    cards: 
-        {todo: CardProps[];
+
+    cards: {
+        todo: CardProps[];
         inProgress: CardProps[];
         done: CardProps[]};  
     boardId: string | null;
@@ -35,9 +36,11 @@ const cardSlice = createSlice({
       })
       .addCase(loadCards.fulfilled, (state, action) => {
         state.status = 'succeeded';
+        console.log('action.payload', action.payload)
         state.cards.todo = action.payload.filter(card => card.status === 'todo');
         state.cards.inProgress = action.payload.filter(card => card.status === 'inProgress');
         state.cards.done = action.payload.filter(card => card.status === 'done');
+        // console.log('state.cards', state.cards)
       })
       .addCase(loadCards.rejected, (state, action) => {
         state.status = 'failed';
@@ -63,7 +66,8 @@ const cardSlice = createSlice({
         };
       })
       .addCase(updateCardDetails.fulfilled, (state, action) => {
-        const { _id, title, description, status } = action.payload;
+        const { _id, title, description, status, boardId } = action.payload;
+      
         const updateCardInArray = (array: CardProps[]) => {
           const index = array.findIndex(card => card._id === _id);
           if (index !== -1) {

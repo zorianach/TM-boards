@@ -3,8 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import css from './Home.module.css'
 import Header from '../../components/Header/Header';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../redux/store';
-import { addBoard, getBoardData, loadBoards, loadCards } from '../../redux/thunks';
+
+import { AppDispatch} from '../../redux/store';
+import { addBoard, getBoardData, loadBoards } from '../../redux/thunks';
 import { selectAllBoards } from '../../redux/selectors';
 
 
@@ -70,17 +71,7 @@ const Home: React.FC = () => {
            <Link to={`/board/${board._id}`} className={css.board_link}>{board.name}</Link></li>
         ))}
       </ul>
-      {/* <ul className={css.board_list}>
-        {boards.length > 0 ? boards.map((board) => (
-          <li 
-            key={board._id} 
-            className={css.board_item}
-            onClick={(event) => enterBoard(board._id, event)}>
-             <Link to={`/board/${board._id}`} className={css.board_link}>{board.name}</Link>
-          </li>
-        ))
-    : 'You have not created any boards yet'}
-      </ul> */}
+    
     </div>
   );
 };

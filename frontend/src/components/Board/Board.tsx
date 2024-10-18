@@ -5,19 +5,27 @@ import { addCard, loadCards, removeCard, updateCardDetails } from '../../redux/t
 import { selectBoardCards, selectBoardId, selectBoardName } from '../../redux/selectors';
 import Column from '../Column/Column'; 
 import css from './Board.module.css';
-import { BoardProps, CardProps } from '../../types';
+
+import { BoardProps, CardProps, ColumnStatus } from '../../types';
 import { AppDispatch } from '../../redux/store';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 
 
 const Board: React.FC<BoardProps> = ({ _id, name, children }) => {
   const dispatch: AppDispatch = useDispatch();
   const boardId = useSelector(selectBoardId); 
   const boardName = useSelector(selectBoardName);
-  const allCards = useSelector(selectBoardCards(boardId || ''));
-  const cards = boardId ? allCards : { todo: [], inProgress: [], done: [] };
+  const cards = useSelector(selectBoardCards(boardId || ''));
+  // const cards: CardsState['cards'] = boardId ? allCards : { "todo": [], "inProgress": [], "done": [] };
   const [editingCardId, setEditingCardId] = useState<string | null>(null);
   const [editingCardData, setEditingCardData] = useState<{ title: string; description: string; boardId: string }>({ title: '', description: '', boardId: '' });
   const [modalPosition, setModalPosition] = useState<{ top: number; left: number } | null>(null);
+  const columns = [
+    { title: "ToDo", status: "todo" },
+    { title: "In Progress", status: "inProgress" },
+    { title: "Done", status: "done" }
+  ];
+
 
   useEffect(() => {
     if (boardId) {
@@ -25,6 +33,49 @@ const Board: React.FC<BoardProps> = ({ _id, name, children }) => {
     }
   }, [dispatch, boardId]);
 
+  const onDragEnd = async (result: DropResult) => {
+    const { source, destination } = result;
+  // console.log('result', result)
+    if (!destination) {
+      return; 
+    }
+  
+    const sourceId = source.droppableId as ColumnStatus;
+    console.log('sourceId', sourceId)
+    const destinationId = destination.droppableId as ColumnStatus;
+    console.log('destinationId', destinationId)
+  
+    if (sourceId === destinationId) {
+      const reorderedCards = Array.from(cards[sourceId]);
+      const [removed] = reorderedCards.splice(source.index, 1);
+      reorderedCards.splice(destination.index, 0, removed);
+  
+      const updatedCard = { ...removed, status: destinationId };
+      try {
+        await dispatch(updateCardDetails({ cardId: removed._id, updatedCard }));
+        // Оновлюємо картки після оновлення
+        if (boardId) {
+          await dispatch(loadCards(boardId));
+        }
+      } catch (error) {
+        console.error('Error updating cards in the same column:', error);
+      }
+    } else {
+      // Переміщення картки в іншу колонку
+      const cardToMove = cards[sourceId][source.index];
+      const updatedCard = { ...cardToMove, status: destinationId };
+  
+      try {
+        await dispatch(updateCardDetails({ cardId: cardToMove._id, updatedCard }));
+        if (boardId) {
+          await dispatch(loadCards(boardId));
+        }
+      } catch (error) {
+        console.error('Error updating card status:', error);
+      }
+    }
+  };
+    
   const handleAddCard = async (title: string, description: string, boardId: string, status: 'todo' | 'inProgress' | 'done') => {
     if (!boardId) {
       console.error("Board ID is not defined.");
@@ -96,34 +147,25 @@ const Board: React.FC<BoardProps> = ({ _id, name, children }) => {
   };
 
   return (
+   <DragDropContext onDragEnd={onDragEnd}>
     <div className={css.board_page_container}>
-      <h1 className={css.board_title}>           
-      <span className={css.title_black_part}></span> 
-      {boardName}
+      <h1 className={css.board_title}>
+        <span className={css.title_black_part}></span> 
+        {boardName}
       </h1>
       
       <div className={css.columns_container}>
-      <Column
-        title="ToDo"
-        cards={cards.todo}
-        onAddCard={handleAddCard}
-        onEditClick={handleEditClick}
-        onDeleteClick={handleDeleteCard}
-      />
-      <Column
-        title="In Progress"
-        cards={cards.inProgress}
-        onAddCard={handleAddCard}
-        onEditClick={handleEditClick}
-        onDeleteClick={handleDeleteCard}
-      />
-      <Column
-        title="Done"
-        cards={cards.done}
-        onAddCard={handleAddCard}
-        onEditClick={handleEditClick}
-        onDeleteClick={handleDeleteCard}
-      />
+      {columns.map((column) => (
+        <Column
+          key={column.status}
+          title={column.title}
+          columnId={column.status}
+          cards={cards[column.status as 'todo' | 'inProgress' | 'done']}  
+          onAddCard={handleAddCard}
+          onEditClick={handleEditClick}
+          onDeleteClick={handleDeleteCard}
+        />
+      ))}
       </div>
 
       {/* Modal for Editing Card */}
@@ -139,6 +181,10 @@ const Board: React.FC<BoardProps> = ({ _id, name, children }) => {
       )}
     </div>
   );
+
+  </DragDropContext>
+);
+
 };
 
 export default Board;

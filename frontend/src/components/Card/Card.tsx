@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { CardProps } from '../../types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -28,3 +29,4 @@ const Card: React.FC<CardComponentProps> = ({ card, onEditClick, onDeleteClick }
 };
 
 export default Card;
+

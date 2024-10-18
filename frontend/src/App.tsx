@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import Home from './page/Home/Home';
 import BoardPage from './page/BoardPage/BoardPage';
 import { Layout } from './components/Layout/Layout';
+
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 

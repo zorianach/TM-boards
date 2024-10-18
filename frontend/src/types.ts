@@ -23,3 +23,4 @@ export interface CardProps {
 
   export type ColumnStatus = 'todo' | 'inProgress' | 'done';
 
+

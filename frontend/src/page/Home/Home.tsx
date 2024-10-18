@@ -70,17 +70,7 @@ const Home: React.FC = () => {
            <Link to={`/board/${board._id}`} className={css.board_link}>{board.name}</Link></li>
         ))}
       </ul>
-      {/* <ul className={css.board_list}>
-        {boards.length > 0 ? boards.map((board) => (
-          <li 
-            key={board._id} 
-            className={css.board_item}
-            onClick={(event) => enterBoard(board._id, event)}>
-             <Link to={`/board/${board._id}`} className={css.board_link}>{board.name}</Link>
-          </li>
-        ))
-    : 'You have not created any boards yet'}
-      </ul> */}
+    
     </div>
   );
 };

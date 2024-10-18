@@ -5,9 +5,11 @@ import { addCard, loadCards, removeCard, updateCardDetails } from '../../redux/t
 import { selectBoardCards, selectBoardId, selectBoardName } from '../../redux/selectors';
 import Column from '../Column/Column'; 
 import css from './Board.module.css';
+
 import { BoardProps, CardProps, ColumnStatus } from '../../types';
 import { AppDispatch } from '../../redux/store';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
+
 
 const Board: React.FC<BoardProps> = ({ _id, name, children }) => {
   const dispatch: AppDispatch = useDispatch();
@@ -24,18 +26,6 @@ const Board: React.FC<BoardProps> = ({ _id, name, children }) => {
     { title: "Done", status: "done" }
   ];
 
-  // const mapTitleToStatus = (title: string): ColumnStatus => {
-  //   switch (title) {
-  //     case 'ToDo':
-  //       return 'todo';
-  //     case 'In Progress':
-  //       return 'inProgress';
-  //     case 'Done':
-  //       return 'done';
-  //     default:
-  //       throw new Error(`Unknown column title: ${title}`);
-  //   }
-  // };
 
   useEffect(() => {
     if (boardId) {
@@ -85,8 +75,7 @@ const Board: React.FC<BoardProps> = ({ _id, name, children }) => {
       }
     }
   };
-
-
+    
   const handleAddCard = async (title: string, description: string, boardId: string, status: 'todo' | 'inProgress' | 'done') => {
     if (!boardId) {
       console.error("Board ID is not defined.");
@@ -177,27 +166,6 @@ const Board: React.FC<BoardProps> = ({ _id, name, children }) => {
           onDeleteClick={handleDeleteCard}
         />
       ))}
-        {/* <Column
-          title="ToDo"
-          cards={cards.todo}
-          onAddCard={handleAddCard}
-          onEditClick={handleEditClick}
-          onDeleteClick={handleDeleteCard}
-        /> */}
-        {/* <Column
-          title="In Progress"
-          cards={cards.inProgress}
-          onAddCard={handleAddCard}
-          onEditClick={handleEditClick}
-          onDeleteClick={handleDeleteCard}
-        />
-        <Column
-          title="Done"
-          cards={cards.done}
-          onAddCard={handleAddCard}
-          onEditClick={handleEditClick}
-          onDeleteClick={handleDeleteCard}
-        /> */}
       </div>
 
       {/* Modal for Editing Card */}
@@ -212,8 +180,11 @@ const Board: React.FC<BoardProps> = ({ _id, name, children }) => {
         />
       )}
     </div>
+  );
+
   </DragDropContext>
 );
+
 };
 
 export default Board;

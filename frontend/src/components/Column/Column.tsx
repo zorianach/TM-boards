@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+
 import { ColumnProps } from '../../types'; 
+
 import css from './Column.module.css'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useSelector } from 'react-redux';
 import { selectBoardId } from '../../redux/selectors';
+
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 const Column: React.FC<ColumnProps> = ({ columnId, title, cards, onAddCard, onEditClick, onDeleteClick }) => {
@@ -29,6 +32,7 @@ const Column: React.FC<ColumnProps> = ({ columnId, title, cards, onAddCard, onEd
       console.error('Error adding card:', error);
     }
   };
+
 
   return (
 <Droppable droppableId={columnId}>
@@ -90,6 +94,7 @@ const Column: React.FC<ColumnProps> = ({ columnId, title, cards, onAddCard, onEd
         </div>
         )}
         </Droppable>
+
   );
 };
 

@@ -68,7 +68,6 @@ export const removeBoard = createAsyncThunk('boards/deleteBoard', async (id: str
 export const loadCards = createAsyncThunk('cards/fetchCards', async (boardId: string, { rejectWithValue }) => {
   try{
     const response = await fetchCardsByBoardId(boardId);
-    console.log('load response', response)
     return response;
   } catch (error) {
     console.error("Error fetching board title:", error);
@@ -111,7 +110,7 @@ export const removeCard = createAsyncThunk('cards/deleteCard', async ({ boardId,
 export const updateCardDetails = createAsyncThunk('cards/updateCard', async ({ cardId, updatedCard }: { cardId: string, updatedCard: Omit<CardProps, '_id'> }, { rejectWithValue }) => {
   try{
     const response = await updateCard(cardId, updatedCard);
-    // console.log('response', response)
+
     return response;
   } catch (error) {
     console.error("Error fetching board title:", error);

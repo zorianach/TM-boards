@@ -1,0 +1,9 @@
+.layout_box {
+    margin-left: auto;
+    margin-right: auto;
+    display:flex;
+    flex-direction: column;
+    /* align-items:center; */
+    gap: 30px;
+    padding: 40px;
+}

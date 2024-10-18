@@ -3,6 +3,7 @@ import { addCard, getBoardData, loadCards, removeCard, updateCardDetails } from 
 import { CardProps } from '../types';
 
 export interface CardsState {
+
     cards: {
         todo: CardProps[];
         inProgress: CardProps[];
@@ -66,31 +67,7 @@ const cardSlice = createSlice({
       })
       .addCase(updateCardDetails.fulfilled, (state, action) => {
         const { _id, title, description, status, boardId } = action.payload;
-      //   const removeCardFromArray = (array: CardProps[]) => {
-      //     const index = array.findIndex(card => card._id === _id);
-      //     if (index !== -1) {
-      //       array.splice(index, 1); // Видаляємо картку з масиву
-      //     }
-      //   };
-      //   // Видалити картку з усіх масивів
-      //   removeCardFromArray(state.cards.todo);
-      //   removeCardFromArray(state.cards.inProgress);
-      //   removeCardFromArray(state.cards.done);
-      //   const updatedCard: CardProps = { 
-      //     _id,
-      //     title,
-      //     description,
-      //     status: status as 'todo' | 'inProgress' | 'done',
-      //     boardId
-      //   };
-      //   if (status === 'todo') {
-      //     state.cards.todo.push(updatedCard);
-      //   } else if (status === 'inProgress') {
-      //     state.cards.inProgress.push(updatedCard);
-      //   } else if (status === 'done') {
-      //     state.cards.done.push(updatedCard);
-      //   }
-      // })
+      
         const updateCardInArray = (array: CardProps[]) => {
           const index = array.findIndex(card => card._id === _id);
           if (index !== -1) {

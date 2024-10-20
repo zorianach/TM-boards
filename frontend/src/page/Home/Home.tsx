@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch} from '../../redux/store';
 import { addBoard, getBoardData, loadBoards } from '../../redux/thunks';
 import { selectAllBoards } from '../../redux/selectors';
+import { BoardProps } from '../../types';
 
 
 const Home: React.FC = () => {
@@ -63,10 +64,14 @@ const Home: React.FC = () => {
       </div>
       <h2 className={css.home_subtitle}>My Boards</h2>
       <ul className={css.board_list}>
-        {boards.map((board) => (
+        {boards.map((board: BoardProps) => (
           <li key={board._id} 
           className={css.board_item}
-          onClick={(event) => enterBoard(board._id, event)}>
+          onClick={(event) => {
+            if (board._id) {
+              enterBoard(board._id, event);
+            }
+          }}>
            <Link to={`/board/${board._id}`} className={css.board_link}>{board.name}</Link></li>
         ))}
       </ul>

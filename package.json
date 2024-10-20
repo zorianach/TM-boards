@@ -6,9 +6,18 @@
   "scripts": {
     "start": "concurrently \"npm run start --prefix frontend\" \"npm run start --prefix backend\"",
     "client": "npm start --prefix frontend",
-    "server": "npm start --prefix backend"
+    "server": "npm start --prefix backend",
+    "build": "react-scripts build"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "react-scripts": "^5.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^9.13.0"
+  }
 }

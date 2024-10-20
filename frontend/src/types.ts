@@ -15,10 +15,20 @@ export interface CardProps {
   export interface ColumnProps {
     title: string;
     cards: CardProps[];
+    onCardDrop: (draggedItem: DragItem, destinationId: ColumnStatus) => void; 
     onAddCard: (title: string, description: string, boardId: string, status: 'todo' | 'inProgress' | 'done') => void;
     onEditClick: (card: CardProps) => void;
     onDeleteClick: (cardId: string) => Promise<void>;  
     columnId: string;
+
+  }
+
+  export interface DragItem {
+    _id: string;
+    title: string;
+    description: string;
+    boardId: string;
+    status: 'todo' | 'inProgress' | 'done';
   }
 
   export type ColumnStatus = 'todo' | 'inProgress' | 'done';

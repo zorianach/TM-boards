@@ -9,7 +9,8 @@ import css from './Board.module.css';
 import { BoardProps, CardProps, ColumnStatus } from '../../types';
 import { AppDispatch } from '../../redux/store';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
-
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const Board: React.FC<BoardProps> = ({ _id, name, children }) => {
   const dispatch: AppDispatch = useDispatch();
@@ -21,11 +22,10 @@ const Board: React.FC<BoardProps> = ({ _id, name, children }) => {
   const [editingCardData, setEditingCardData] = useState<{ title: string; description: string; boardId: string }>({ title: '', description: '', boardId: '' });
   const [modalPosition, setModalPosition] = useState<{ top: number; left: number } | null>(null);
   const columns = [
-    { title: "ToDo", status: "todo" },
-    { title: "In Progress", status: "inProgress" },
-    { title: "Done", status: "done" }
+    { title: "ToDo", status: 'todo' },
+    { title: "In Progress", status: 'inProgress' },
+    { title: "Done", status: 'done' }
   ];
-
 
   useEffect(() => {
     if (boardId) {
@@ -33,48 +33,63 @@ const Board: React.FC<BoardProps> = ({ _id, name, children }) => {
     }
   }, [dispatch, boardId]);
 
-  const onDragEnd = async (result: DropResult) => {
-    const { source, destination } = result;
-  // console.log('result', result)
-    if (!destination) {
-      return; 
-    }
-  
-    const sourceId = source.droppableId as ColumnStatus;
-    console.log('sourceId', sourceId)
-    const destinationId = destination.droppableId as ColumnStatus;
-    console.log('destinationId', destinationId)
-  
-    if (sourceId === destinationId) {
-      const reorderedCards = Array.from(cards[sourceId]);
-      const [removed] = reorderedCards.splice(source.index, 1);
-      reorderedCards.splice(destination.index, 0, removed);
-  
-      const updatedCard = { ...removed, status: destinationId };
-      try {
-        await dispatch(updateCardDetails({ cardId: removed._id, updatedCard }));
-        // Оновлюємо картки після оновлення
-        if (boardId) {
-          await dispatch(loadCards(boardId));
-        }
-      } catch (error) {
-        console.error('Error updating cards in the same column:', error);
+  const onCardDrop = async (item: CardProps, destinationStatus: ColumnStatus) => {
+    const updatedCard = { ...item, status: destinationStatus };
+
+    try {
+      await dispatch(updateCardDetails({ cardId: item._id, updatedCard }));
+      if (boardId) {
+        await dispatch(loadCards(boardId));
       }
-    } else {
-      // Переміщення картки в іншу колонку
-      const cardToMove = cards[sourceId][source.index];
-      const updatedCard = { ...cardToMove, status: destinationId };
-  
-      try {
-        await dispatch(updateCardDetails({ cardId: cardToMove._id, updatedCard }));
-        if (boardId) {
-          await dispatch(loadCards(boardId));
-        }
-      } catch (error) {
-        console.error('Error updating card status:', error);
-      }
+    } catch (error) {
+      console.error('Error updating card status:', error);
     }
   };
+
+  // const onDragEnd = async (result: DropResult) => {
+  //   console.log('source.droppableId:', result.source.droppableId);
+  //   console.log('destination.droppableId:', result.destination?.droppableId);
+  //   const { source, destination } = result;
+  // // console.log('result', result)
+  //   if (!destination) {
+  //     return; 
+  //   }
+  
+  //   const sourceId = source.droppableId as ColumnStatus;
+  //   console.log('sourceId', sourceId)
+  //   const destinationId = destination.droppableId as ColumnStatus;
+  //   console.log('destinationId', destinationId)
+  
+  //   if (sourceId === destinationId) {
+  //     const reorderedCards = Array.from(cards[sourceId]);
+  //     const [removed] = reorderedCards.splice(source.index, 1);
+  //     reorderedCards.splice(destination.index, 0, removed);
+  
+  //     const updatedCard = { ...removed, status: destinationId };
+  //     try {
+  //       await dispatch(updateCardDetails({ cardId: removed._id, updatedCard }));
+  //       // Оновлюємо картки після оновлення
+  //       if (boardId) {
+  //         await dispatch(loadCards(boardId));
+  //       }
+  //     } catch (error) {
+  //       console.error('Error updating cards in the same column:', error);
+  //     }
+  //   } else {
+  //     // Переміщення картки в іншу колонку
+  //     const cardToMove = cards[sourceId][source.index];
+  //     const updatedCard = { ...cardToMove, status: destinationId };
+  
+  //     try {
+  //       await dispatch(updateCardDetails({ cardId: cardToMove._id, updatedCard }));
+  //       if (boardId) {
+  //         await dispatch(loadCards(boardId));
+  //       }
+  //     } catch (error) {
+  //       console.error('Error updating card status:', error);
+  //     }
+  //   }
+  // };
     
   const handleAddCard = async (title: string, description: string, boardId: string, status: 'todo' | 'inProgress' | 'done') => {
     if (!boardId) {
@@ -145,9 +160,13 @@ const Board: React.FC<BoardProps> = ({ _id, name, children }) => {
       setEditingCardId(card._id);
       setEditingCardData({ title: card.title, description: card.description,  boardId: card.boardId });
   };
+// const Col =(columns)=> {
+//   {columns.map((column) =>
+//     console.log('column.status', column.status)
+// }
 
   return (
-   <DragDropContext onDragEnd={onDragEnd}>
+   
     <div className={css.board_page_container}>
       <h1 className={css.board_title}>
         <span className={css.title_black_part}></span> 
@@ -155,17 +174,46 @@ const Board: React.FC<BoardProps> = ({ _id, name, children }) => {
       </h1>
       
       <div className={css.columns_container}>
+      {/* <DragDropContext onDragEnd={onDragEnd}> */}
+      <DndProvider backend={HTML5Backend}>
+      {/* <Column
+        title="ToDo"
+        columnId="todo"
+        cards={cards.todo}
+        onAddCard={handleAddCard}
+        onEditClick={handleEditClick}
+        onDeleteClick={handleDeleteCard}
+      />
+      <Column
+        title="In Progress"
+        columnId="inProgress"
+        cards={cards.inProgress}
+        onAddCard={handleAddCard}
+        onEditClick={handleEditClick}
+        onDeleteClick={handleDeleteCard}
+      />
+      <Column
+        title="Done"
+        columnId="done"
+        cards={cards.done}
+        onAddCard={handleAddCard}
+        onEditClick={handleEditClick}
+        onDeleteClick={handleDeleteCard}
+      /> */}
       {columns.map((column) => (
         <Column
           key={column.status}
           title={column.title}
           columnId={column.status}
+          onCardDrop={onCardDrop}
           cards={cards[column.status as 'todo' | 'inProgress' | 'done']}  
           onAddCard={handleAddCard}
           onEditClick={handleEditClick}
           onDeleteClick={handleDeleteCard}
         />
       ))}
+      </DndProvider>
+       {/* </DragDropContext> */}
       </div>
 
       {/* Modal for Editing Card */}
@@ -180,9 +228,6 @@ const Board: React.FC<BoardProps> = ({ _id, name, children }) => {
         />
       )}
     </div>
-  );
-
-  </DragDropContext>
 );
 
 };

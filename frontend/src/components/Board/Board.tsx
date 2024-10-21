@@ -8,7 +8,6 @@ import css from './Board.module.css';
 
 import { BoardProps, CardProps, ColumnStatus } from '../../types';
 import { AppDispatch } from '../../redux/store';
-import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 

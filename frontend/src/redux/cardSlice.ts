@@ -71,7 +71,7 @@ const cardSlice = createSlice({
         const updateCardInArray = (array: CardProps[]) => {
           const index = array.findIndex(card => card._id === _id);
           if (index !== -1) {
-            array[index] = { ...array[index], title, description, status };
+            array[index] = { ...array[index], title, description, status, boardId };
           }
         };
         updateCardInArray(state.cards.todo);
